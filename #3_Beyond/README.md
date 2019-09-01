@@ -12,8 +12,8 @@ Containers can also be used in different environments. Continuous integration (C
 
 Sample :
 
-docker build -t gitlab.inf.unibz.it:4567/<user-name>/<repo-name>/<container> .
-docker push gitlab.inf.unibz.it:4567/<user-name>/<repo-name>/<container>
+docker build -t gitlab.inf.unibz.it:4567/\<user-name\>/\<repo-name\>/\<container\> .
+docker push gitlab.inf.unibz.it:4567/\<user-name\>/\<repo-name\>/\<container\>
 
 You might need to login before pushing to the registry is possilbe.
 
