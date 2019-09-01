@@ -1,6 +1,8 @@
 # 3 - Beyond 
 EMSE Docker tutorial
 
+POM1
+
 The filder javaApp contains a simple HelloWorld application that you can use for the first example of this fifth POM. 
 However you can use any console based java program. 
 
@@ -8,12 +10,15 @@ Step 1. Try to create the container file yourself, then, in case, check the solu
 
 Step 2. Once done, we try to set the container as a stand-alone application setting the default behaviour of a container.
 
+POM2
+
 Containers can also be used in different environments. Continuous integration (CI) makes big use of it.
 
 Sample :
-
-docker build -t gitlab.inf.unibz.it:4567/\<user-name\>/\<repo-name\>/\<container\> .
-docker push gitlab.inf.unibz.it:4567/\<user-name\>/\<repo-name\>/\<container\>
+```sh
+docker build -t gitlab.inf.unibz.it:4567/<user-name>/<repo-name>/<container> .
+docker push gitlab.inf.unibz.it:4567/<user-name>/<repo-name>/<container>
+```
 
 You might need to login before pushing to the registry is possilbe.
 
