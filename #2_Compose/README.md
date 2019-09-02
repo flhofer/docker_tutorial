@@ -11,12 +11,14 @@ version: '3'
 services:
   python:
     build: .
-  volumes:
-	- .:/home/myapp
+    volumes:
+      - .:/home/myapp
 ```
 
-:grey_question: What does this compostition file do? (you can use the [getting started]
+:grey_question: What does this compostition file do? (you can use the [getting started][1] guide)
 
+With this in mind, thing of docker-compose as an extension of the Docker engine.
+In the following we will see how to actually compose a service.
 
 ## Create a compose file
 
@@ -26,6 +28,18 @@ The tutoria [HERE][2] shows how to create such a service using Docker and Docker
 
 What you will encouter during this tutorial is that there are many options and flags that remind a Dockerfile. Indeed, in many cases if specified in a compose file, these can replace or override the default values of an image.
 
+## Resources
+
+Resources management grow of importance the more a system is used to perform multiple tasks. On a server it is important that one service does not threaten the health of the other. 
+As you may already have guessed, docker-compose forsees parameters to manage these resources. 
+
+:grey_question: Which are they? Try to setup a memory limit for the database. 
+
+A thing not discussed previously is the flexibility of volumes. Beyond the traditional mounting of a folder, volumes can also be shared only among containers. They are created and labeled, and then assigned to the instances requiring them.
+
+:grey_question: In which cases such a shared volume might be useful?
+
+## Swarm
 
 
 
