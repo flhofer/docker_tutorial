@@ -118,10 +118,13 @@ You can find more information on the docker website, [command reference docker s
 
 ### Summary
 
-So far we have seen that there are images and containers. Both are identified by names and by a id, UUID, long or short. Containers have and isolation concept that focuses on simplicity, Thus 
+So far we have seen that there are images and containers. Both are identified by names and by a id, UUID, long or short. Containers have and isolation concept that focuses on simplicity, Thus it is common practice to run a single service or program per container. They are ephermeral, this means that runtime information is not stored if containers are replaced with a newer image version.
 
+This brings advantages and some disadvantages. 
 
-## Customizing the image
+:grey_question: what would you say are those? Any idea what the limtis of these containers might be?
+
+## Customizing the container
 
 
 
