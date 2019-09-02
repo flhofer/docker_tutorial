@@ -3,12 +3,12 @@
 There are essentialy two ways to ways to create an image:
 
 * Via an interactive prompt and commit
-* Via a build script that details all the steps, a [Dockerfile][1]
+* Via a build script that details all the steps [Dockerfile][1]
 
 
 Let's start with basics. Image: Ubuntu.
 
-You need privileges to access control groups ([CGroups][2]), thus docker might need `sudo` or root access
+You need privileges to access control groups (CGroups [CGroups][2]), thus docker might need `sudo` or root access
 
 ```sh
 docker pull ubuntu:latest
@@ -43,7 +43,7 @@ docker run --name cont1 -it ubuntu:latest
 
 This starts a new container instance with the name `cont1` and interactively (-it) connects to it. The container automatically exits once it has nothing to do anymore, i.e. if you start a container to run a program, it stops again as soon as the program terminates.
 
-:information_source: -i = always attach to container,  -t create TTY, together -it. Alternatively, -d stands for detach, thus running in the background. We will see later what it means. More info in the [reference][3]
+:information_source: -i = always attach to container,  -t create TTY, together -it. Alternatively, -d stands for detach, thus running in the background. We will see later what it means. More info in the run reference [run-reference][3]
 
 If you type `exit`, you terminate the prompt return back to the console. You did not specify any command, but any container has a default execution or command entry. We can verify that by typing `docker inspect <image-name>`.
 For `ubuntu:latest` this gives a JSON format output containing
@@ -77,9 +77,10 @@ Linux e024b496d020 5.0.0-25-generic #26~18.04.1-Ubuntu SMP Thu Aug 1 13:51:02 UT
 
 The container can be removed with `docker container rm <name>`. If you have a container running in the background, like with -d, it can be stopped or killed using `stop` or `kill` instead of `rm`.
 Running containers can be listed with `docker ps` or `docker container ls`. To show also inactive containers, add the -a flag.
+You can find more information on the docker 
 
 
 References:   
-[1]: <https://docs.docker.com/engine/reference/builder/> "Docker Builder reference"   
-[2]: <https://www.linuxjournal.com/content/everything-you-need-know-about-linux-containers-part-i-linux-control-groups-and-process> "Linux Control groups and process"
-[3]: <https://docs.docker.com/v17.09/engine/reference/run/> "Docker run reference"
+[Dockerfile]: <https://docs.docker.com/engine/reference/builder/> "Docker Builder reference"   
+[CGroups]: <https://www.linuxjournal.com/content/everything-you-need-know-about-linux-containers-part-i-linux-control-groups-and-process> "Linux Control groups and process"
+[run-reference]: <https://docs.docker.com/v17.09/engine/reference/run/> "Docker run reference"
