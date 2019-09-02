@@ -3,7 +3,7 @@ FROM ubuntu:latest
 RUN apt-get update && \ 
 	apt-get install -y python 
 
-MKDIR /home/myapp
+RUN mkdir /home/myapp
 WORKDIR /home/myapp
 COPY calc.py .
 

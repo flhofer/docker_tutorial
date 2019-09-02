@@ -160,14 +160,82 @@ Done. Well, what if we did a lot of work and want to make this changes permanent
 
 :grey_question: What are the advantages of having it as an image now?
 
+The container, running or not, can be saved as an image by using the commit command. We can do that with
+
+```sh
+docker commit cont1 <imagename>
+```
+The image name is optional, but helps to organize things. Moreover, images are incemental. This means only changes to the previous image (here ubuntu:latest) are stored. If you update your container and then commit again with the same name, the image will have a new version on top of `ubuntu:latest`. This allows to incrementaly update, while saving space. Only changes to the original image are saved. 
+
+You can observe these details by `inspect`ing the two images. You should get something like the following for the container image
+
+```sh
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:6cebf3abed5fac58d2e792ce8461454e92c245d5312c42118f02e231a73b317f",
+                "sha256:f7eae43028b334123c3a1d778f7bdf9783bbe651c8b15371df0120fd13ec35c5",
+                "sha256:7beb13bce073c21c9ee608acb13c7e851845245dc76ce81b418fdf580c45076b",
+                "sha256:122be11ab4a29e554786b4a1ec4764dd55656b59d6228a0a3de78eaf5c1f226c",
+                "sha256:a418b64d6e82c4635231fbb41da0788417c671cc631b221db5363be1aa4128af"
+            ]
+        },
+```
+
 
 
 ## Using Dockerfiles
 
+Sometimes these process tends to be laborious. In addition, if you have to repeat it because of some minor changes, the manual and interactive approach gets to laborious. Thus there is an other way to create custom imanges: the Dockerfile. 
 
+A Dockerfile contains all the steps needed to create the desired image and does not need any manual intervention (if done right).
+Thus, let's try to create one for the previous python app example.
+
+We don't need to get images. Previously we started from `ubuntu:latest`, and we specify exacly this. In a new empty file called Dockerfile, add this line.
+
+```sh
+FROM ubuntu:latest
+```
+ 
+The next thing we did, is to install Python. The `RUN` command defines what to execute inside the container. It can also be mutliple lines with an `\` to escape. Let's add
+
+```sh
+RUN apt-get update && \ 
+	apt-get install -y python
+```
+
+(-y so it doesn't prompt)
+
+Now, create a directory, again with `RUN` and copy the file of the app with `COPY`. The command `WORKDIR` comes in handy to define a working directory and avoid to specify again the path all the time.
+
+```sh
+RUN mkdir /home/myapp
+WORKDIR /home/myapp
+COPY calc.py .
+```
+
+Lastly, we have to define our default behaviour, what happens if somebody starts the container. We would like to run our calculator, so let's put it in with `CMD`
+
+```sh
+CMD ["python", "calc.py"]
+```
+
+Now, if somebody runs this image in a container, by default our calculating app is launched.
+
+Final step, build the image. Just run `docker build .` to compile the image. With the flag -t you can specify an optional image name.
+The result should be something like `Successfully built 3c7a3b8cbbd6`.
+If you now run it as a new container, either with name or the resulting UUID, you get the calculator running: `docker run -it 3c7a3b8cbbd6`.
 
 
 ## Process resources
+
+
+Those of you who did the tutorial know there is more to come.
+
+
+
+
+https://stackoverflow.com/questions/28302178/how-can-i-add-a-volume-to-an-existing-docker-container
 
 
 
