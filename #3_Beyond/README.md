@@ -53,18 +53,18 @@ testrun:
 In this configuration we have two stages for our automation pipeline, build abd test. each of the stages the defines the executiona and the expected artifacts.
 If this configuration is enabled, it starts the pipeline when a new commit is done.
 
-:information_source: CI, pipelines and shared runners are not enabled by default. If there is no shared runner available, you can configure every computer as a runner. The GitLab of unibz has a shared Docker runner. 
+:information_source: CI, pipelines and shared runners are not enabled by default. If there is no shared runner available, you can configure every computer as a runner. The GitLab of unibz has a shared Docker runner. See [runners][1] for more info about runners.
 
-Lets try to create a repository and automate the process. Once the files are uploaded and CI enabled in the settings, you have to create a new pipeline.
+As an example, you could actualy use the plain Oracle image of the previous example and test and compile the code in CI. The java code put in a gitlab repository can be build and tested automatically at every commit.
+
+Lets try to create a repository and automate the process. Once the files are uploaded and CI enabled in the settings, you have to create a new [pipeline][2]. 
 
 :grey_question: So, where do you see the limits of this approach?
 
 Another interresting feature is that you can use the CI of GitLab to build docker images as well. Thus, if you have a particular software that has to run in a contaier, on every commit, the image is build and deployed to the docker registry (if configured).
+Info about this process can be found [here][4].
 
-
-
-
-
+Lastly, sometimes we want to use our own registry for containers. Gitlab forsees a registry for every project. The container images can be build and pushed to its registry following this schema:
 
 Sample :
 ```sh
@@ -72,20 +72,10 @@ docker build -t gitlab.inf.unibz.it:4567/<user-name>/<repo-name>/<container> .
 docker push gitlab.inf.unibz.it:4567/<user-name>/<repo-name>/<container>
 ```
 
-You might need to login before pushing to the registry is possilbe.
+You might need to login before pushing to the registry is possilbe. These Docker images can then be used in the CI flow to build, test and deploy an application in a custom or private manner. More details in the [manual][3]. 
 
-These Docker images can then be used in the CI flow to build, test and deploy an application
-
-
-These are build according to a pipeline. More information about pipelines can be found here 
-
-https://gitlab.inf.unibz.it/help/ci/pipelines.md
-
-as an example, you could actualy use the plain Oracle image of the previous example and test and compile the code in CI.
-The java code put in a gitlab repository can be build and tested automatically at every commit.
-
-Get an idea of the CI configruation with the example in the folder
-
-https://gitlab.inf.unibz.it/help/ci/docker/using_docker_build.md
-https://gitlab.inf.unibz.it/help/ci/docker/using_docker_images.md
+[1]: <https://docs.gitlab.com/ee/ci/runners/> "Runner configuration" 
+[2]: <https://gitlab.inf.unibz.it/help/ci/pipelines.md> "Automation pipeline"
+[3]: <https://gitlab.inf.unibz.it/help/ci/docker/using_docker_build.md> "Docker build in CI"
+[4]: <https://gitlab.inf.unibz.it/help/ci/docker/using_docker_images.md> "Docker images in CI"
 
