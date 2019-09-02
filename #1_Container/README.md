@@ -28,8 +28,8 @@ If you try the pull command again with an other tag, the download will start aga
 ```sh
 florian@helius:~/Public/Projects/docker_tutorial/#1_Container$ sudo docker images
 REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
-ubuntu                  rolling             9f3d7c446553        2 weeks ago         70MB
-ubuntu                  latest              a2a15febcdf3        2 weeks ago         64.2MB
+ubuntu                  rolling             9f3d7c446553        1 week ago          70MB
+ubuntu                  latest              a2a15febcdf3        1 week ago          64.2MB
 ```
 Note the compact size of the images.
 
