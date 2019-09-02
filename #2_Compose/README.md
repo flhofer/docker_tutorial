@@ -35,14 +35,19 @@ As you may already have guessed, docker-compose forsees parameters to manage the
 
 :grey_question: Which are they? Try to setup a memory limit for the database. 
 
-A thing not discussed previously is the flexibility of volumes. Beyond the traditional mounting of a folder, volumes can also be shared only among containers. They are created and labeled, and then assigned to the instances requiring them.
+A thing not discussed previously is the flexibility of volumes. Beyond the traditional bind mounting of a folder, volumes can also be shared only among containers. They are created and labeled, and then assigned to the instances requiring them.
 
 :grey_question: In which cases such a shared volume might be useful?
 
 ## Swarm
 
+An extension of a composition is a Swarm. Docker swarm is only one of a few ways to use multiple nodes to provide a certain service. The [Voting App][3] example of the tutorial shows how an appicaltion can use parallelized instances. With multiple nodes, the service can be spawn on many servers or virtual instances. If you didn't try it out yet, do it now.
+
+:grey_question: So, when is this really useful? Who might be applying this technology?
+
+
 
 
 [1]: <https://docs.docker.com/compose/gettingstarted/> "Docker compose, getting started"
 [2]: <https://linuxconfig.org/how-to-create-a-docker-based-lamp-stack-using-docker-compose-on-ubuntu-18-04-bionic-beaver-linux>
-
+[3]: <https://github.com/docker/labs/blob/master/beginner/chapters/votingapp.md> "Deploying to a Swarm"
