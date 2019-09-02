@@ -70,7 +70,7 @@ where you can put any command instead ( we can omit '/bin/' as it is specified i
 
 ### Isolation ??
 
-Without deleting any container, we can start our `cont1` again by typing `docker container start -i cont1`, and we are back in the bash. ( no need for -t, tty is already created )
+Without deleting any container, we can start our `cont1` again by typing `docker container start -i cont1`, and we are back in the bash. ( here -i stands for interactive )
 Here now the curious thing, the actual difference to a virtualization.
 In the bash, type `uname -a`. You should have a different output for each *version* of your systems. mine is
 
@@ -91,7 +91,7 @@ root@e024b496d020:/# ps
     1 pts/0    00:00:00 bash
    34 pts/0    00:00:00 ps
 ```
-The main process of the container, the process with number 1, is bash, the command shell. Like said before, the container exits as soon as the process terminates. To demonstrate the effect, try this command while in the container: `for i in {1..10}; do echo "Hello $i"; sleep 1; done &`.
+The main process of the container, the process with number 1, is bash, the command shell, our main/default command. Like said before, the container exits as soon as the process terminates. To demonstrate the effect, try this command while in the container: `for i in {1..10}; do echo "Hello $i"; sleep 1; done &`.
 It should list you a bunch of *Hello* lines, one every second and then end.
 
 ```sh
@@ -108,6 +108,8 @@ Hello 9
 Hello 10
 ```
 In fact, it returns a new launched process number, 10 in my case, and executes it in the background. As long as `bash` is alive, the new process runs. if you run it again, but type `exit` before all lines are print, the result is different. Try to come up with an explanation. 
+
+:information_source: If you use programs such as a web server or a database management system, those run daemons which remain active until terminated by event or user.
 
 :grey_question: What does thsis mean when you are dealing with containers in your future environment?
 
@@ -126,6 +128,37 @@ This brings advantages and some disadvantages.
 
 ## Customizing the container
 
+The container we created, `cont1`, is a running instance of the image `ubuntu:latest` but it can also be changed to our needs. We can install software and alter the configuation to what suites best to us.
+
+Using the interactive mode, we can enter the container and perform all the changes. This time, instead of starting and stoping the container every time, we just attach and detach our console.
+So, let's start the container again.
+
+```sh
+docker start -i cont1
+```
+
+We now install `Python` to run the little calculator demo program inside the container. Thus, type `apt-get update` to update the list of available software, then `apt-get install python`. It will propt you if you want to install the packets.
+Now, we have a running environment for python programs inside the container. If we need more libraries, we can add also software like `pip` to manage Python. However, we are fine for now.
+
+The next step is to bring the app into the container. Instead of typing `exit`, if we need to return to the console we use `CTRL-p` `CTRL-q` keys. This will leave the container running, e.g. continue installing software ecc.
+To copy files to and from the container we can use `docker cp`, which works like the unix cp. If the source or destination is a container, the path is preceeded by `<containername>:`.
+Let's copy the app.
+
+```sh
+docker cp calc.py cont1:/home
+```
+
+If then we need to return to the container, we can use `docker attach cont1` and we are back in the container.
+Let's run our program:
+
+```sh
+cd /home
+python calc.py
+```
+
+Done. Well, what if we did a lot of work and want to make this changes permanent, like as an image?
+
+:grey_question: What are the advantages of having it as an image now?
 
 
 
