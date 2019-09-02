@@ -226,23 +226,50 @@ Final step, build the image. Just run `docker build .` to compile the image. Wit
 The result should be something like `Successfully built 3c7a3b8cbbd6`.
 If you now run it as a new container, either with name or the resulting UUID, you get the calculator running: `docker run -it 3c7a3b8cbbd6`.
 
+See [Builder reference][1] for more options.
 
-## Process resources
+## Resources
+
+Once we have the container running, we might require a set of resources. Some need connectivity or a file access outside of the container. Ex. a web server needs to expose a port but also to access the pages files. If the files are stored inside the container, it gets hard to change and update a web page.
+These are resources that have to be set before running a container.
+
+There are also other resources. A container uses memory and CPU, which are claimed from the host running the container. Through CGroups we can also set and limit the amout of resources assigned to the container.
+These are resources that can be set with existing containers.
+
+:grey_question: What are the risks if there is no limit to containers?
 
 
-Those of you who did the tutorial know there is more to come.
+Returning to option 1, we can set these in the image file or at creation. A port for a web client can e.g. be set through the line `EXPOSE 80` and expose port 80. (sample in the introduction video).
+A mount point to a volume instead can be set with `VOLUME` specifying the mount point. Lets say we would like to use the file we have on disk for the calculator, so to reflect changes when we add new features. 
 
 
+```sh
+docker run --name cont2 -v "$PWD":/home/myapp -it 981dd3fd5830
+```
+($PWD in unix environments is the current working directory)
 
+Now, everytime we start	`cont2` the container accesses the actual file on disk. If you try to change it, you will se the changes in the program if you restart it.
+Volumes support different modes. This direct connection is only one mode. Additional ways are described in the [volumes][4] reference.
 
-https://stackoverflow.com/questions/28302178/how-can-i-add-a-volume-to-an-existing-docker-container
+For the case of active resources, we can set them with `docker run` at creation or with `docker update` later on.
+As example let's try to set the cpu assigned to `cont1`
 
+```sh
+docker update --cpu-quota 1000 --cpu-period 1000000 cont1
+```
 
+This sets the amout to 1\% of the total assigned cpu. 
+
+Try it out a bit yourself. Change the resources and see how it reacts.
 
 ## Summary
 
+In this tutorial we saw basic interaction with containers and their images. We created and used containers, then we customized them and saved them for future use. 
+Finally, we quickly saw how to change a container's resources.
 
 
 [1]: <https://docs.docker.com/engine/reference/builder/> "Docker Builder reference"   
 [2]: <https://www.linuxjournal.com/content/everything-you-need-know-about-linux-containers-part-i-linux-control-groups-and-process> "Linux Control groups and process"
 [3]: <https://docs.docker.com/v17.09/engine/reference/run/> "Docker run reference"
+[4]: <https://docs.docker.com/storage/> "Volumes and Storage"
+[5]: <https://stackoverflow.com/questions/28302178/how-can-i-add-a-volume-to-an-existing-docker-container> "Adding a volume to an existing container"
