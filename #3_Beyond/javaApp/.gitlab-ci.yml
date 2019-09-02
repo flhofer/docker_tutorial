@@ -1,15 +1,21 @@
 default:
-	image: openjdk:7
+  image: openjdk:7
 
 stages:
-	- build
-	- test
+  - build
+  - test
 
 compile: 
-	stage: build
-	script: javac HelloWorld.java
+  stage: build
+  script: javac HelloWorld.java
+  artifacts:
+    paths:
+      - HelloWorld.class
 
 testrun:
-	stage: test
-	script: java HelloWorld
+  stage: test
+  script: java HelloWorld
+  artifacts:
+    paths:
+      - HelloWorld.class
 
