@@ -1,16 +1,18 @@
 # 1 - Building images and creating containers
 
-There are essentialy two ways to ways to create an image:
+If you watched the tutorial video you know by now that there are two main components for docker: images and containers. An image contains the software that is run in a container, esentially every container needs some minimal image to run someting.
+There are essentialy two ways to create an image:
 
 * Via an interactive prompt and commit
 * Via a build script that details all the steps, a [Dockerfile][1]
 
+We will see in the following how to create them using both approaches.
 
 ## The imange and its use
 
-Let's start with basics. Image: Ubuntu.
-
-You need privileges to access control groups ([CGroups][2]), thus docker might need `sudo` or root access
+Let's start with basics, image: Ubuntu. We will download a ready image for an Ubuntu environment and play a bit with it. 
+Depending on your system settings, you may need additional privileges to access control groups ([CGroups][2]), a feature used in Docker.  Thus for all `docker` commands you might need either a preceding `sudo` or root login (MacOs/Linux/Unix).
+So, let's pull the image. Open the Docker console, enter a new folder or create one, and type:
 
 ```sh
 docker pull ubuntu:latest
@@ -128,9 +130,9 @@ This brings advantages and some disadvantages.
 
 ## Customizing the container
 
-The container we created, `cont1`, is a running instance of the image `ubuntu:latest` but it can also be changed to our needs. We can install software and alter the configuation to what suites best to us.
+The container we created, `cont1`, is a running instance of the image `ubuntu:latest` but it can also be changed to our needs. We can install software and alter the configuation to what suites best to us. For this example we will use the small Python program in this folder. Download the `.py` file and put it into your working directory.
 
-Using the interactive mode, we can enter the container and perform all the changes. This time, instead of starting and stoping the container every time, we just attach and detach our console.
+Using the interactive mode, we can enter the container and perform all the changes. This time, instead of starting and stoping the container every time, we just attach and detach it to our active console (terminal).
 So, let's start the container again.
 
 ```sh
@@ -142,7 +144,7 @@ Now, we have a running environment for python programs inside the container. If 
 
 The next step is to bring the app into the container. Instead of typing `exit`, if we need to return to the console we use `CTRL-p` `CTRL-q` keys. This will leave the container running, e.g. continue installing software ecc.
 To copy files to and from the container we can use `docker cp`, which works like the unix cp. If the source or destination is a container, the path is preceeded by `<containername>:`.
-Let's copy the app.
+Let's copy the app. (verify the file is in you actual working directory)
 
 ```sh
 docker cp calc.py cont1:/home
