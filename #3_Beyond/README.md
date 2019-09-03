@@ -50,8 +50,7 @@ testrun:
       - HelloWorld.class
 ```
 
-In this configuration we have two stages for our automation pipeline, build abd test. each of the stages the defines the executiona and the expected artifacts.
-If this configuration is enabled, it starts the pipeline when a new commit is done.
+In this configuration we have two stages for our automation pipeline, build abd test. Each of the stages the defines the execution and the expected artifacts. If this configuration is enabled, it starts the pipeline when a new commit is done. Details on how to compose this configuation can be found [here][5].
 
 :information_source: CI, pipelines and shared runners are not enabled by default. If there is no shared runner available, you can configure every computer as a runner. The GitLab of unibz has a shared Docker runner. See [runners][1] for more info about runners.
 
@@ -72,10 +71,11 @@ docker build -t gitlab.inf.unibz.it:4567/<user-name>/<repo-name>/<container> .
 docker push gitlab.inf.unibz.it:4567/<user-name>/<repo-name>/<container>
 ```
 
-You might need to login before pushing to the registry is possilbe. These Docker images can then be used in the CI flow to build, test and deploy an application in a custom or private manner. More details in the [manual][3]. 
+You might need to login (`docker login <registry>`) before pushing to the registry is possilbe. These Docker images can then be used in the CI flow to build, test and deploy an application in a custom or private manner. More details in the [manual][3]. 
 
 [1]: <https://docs.gitlab.com/ee/ci/runners/> "Runner configuration" 
 [2]: <https://gitlab.inf.unibz.it/help/ci/pipelines.md> "Automation pipeline"
 [3]: <https://gitlab.inf.unibz.it/help/ci/docker/using_docker_build.md> "Docker build in CI"
 [4]: <https://gitlab.inf.unibz.it/help/ci/docker/using_docker_images.md> "Docker images in CI"
+[5]: <https://gitlab.inf.unibz.it/help/ci/yaml/README.md> "YAML CI - Gitlab"
 
