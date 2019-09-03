@@ -232,6 +232,8 @@ If you now run it as a new container, either with name you specified (optional v
 
 See [Builder reference][1] for more options.
 
+Optionally, now you can login to your docker hub account with `docker login` and then push the container image to the repository with `docker push <imagename>`. (you need an account for that..)
+
 ## Resources
 
 Once we have the container running, we might require a set of resources. Some need connectivity or a file access outside of the container. Ex. a web server needs to expose a port but also to access the pages files. If the files are stored inside the container, it gets hard to change and update a web page.
