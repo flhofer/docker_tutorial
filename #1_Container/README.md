@@ -18,16 +18,16 @@ So, let's pull the image. Open the Docker console, enter a new folder or create 
 docker pull ubuntu:latest
 ```
 
-This loads an Ubuntu image from the default registry (hub.docker.com). The text after the colon defines the version, or *tag* of the image. `latest` stands for the newest release that is *safe* to use. If `:latest` is omitted, it is chosen by default.
+This loads an Ubuntu image from the default container registry (hub.docker.com). The text after the colon defines the version, or *tag* of the image. `latest` stands for the newest release that is *safe* to use. If `:latest` is omitted, it is chosen by default.
 
 :grey_question: Which other releases are there? Name some tags
 
-:information_source: Hint\: you might want to check the [hub](hub.docker.com)
+:information_source: Hint\: you might want to check the [hub](https://hub.docker.com)
  
 If you lookup the entries of the hub, you can see two main groups, official and user/comunity maintained. The name tells the whole story. 
-So we have now the `latest`, which seems not the actual latest, but more the *stable*. Indeed, its the actual LTS (long term support) version
+So we have now the `latest`, which seems not the actual latest, but more the *stable*. Indeed, its the actual LTS (long term support) version, thus the safest for production code. For development and new features you might want to use the *:rolling* version.
 
-If you try the pull command again with an other tag, the download will start again. Typing `docker images` we now get the list of available images.
+If you try the pull command again with an other tag, the download will start again. Typing `docker images` we now get the list of available images. (example with `:rolling`)
 
 ```sh
 florian@helius:~/Public/Projects/docker_tutorial/#1_Container$ sudo docker images
@@ -36,7 +36,7 @@ ubuntu                  rolling             9f3d7c446553        1 week ago      
 ubuntu                  latest              a2a15febcdf3        1 week ago          64.2MB
 ```
 Note the compact size of the images.
-In alternative to tags, one can also use the *digest*. It is a unique identifier for the image and might be needed if no tag has been given to an image. The IMAGE_ID in the example represents the short notation of the UUID. Thus the same imanges can also be pulled using `ubuntu@a2a15febcdf3` as image name, where `@` tells that we are looking for a digest UUID.
+In alternative to tags, one can also use the *digest*. It is a unique identifier for the image and might be needed if no tag has been given to an image. The IMAGE_ID in the example represents the short notation of the UUID. Thus the same imanges can also be pulled using e.g.  `ubuntu@a2a15febcdf3` as image name, where `@` tells that we are looking for a digest UUID.
 
 These images give us the grounds we need to run containers. If we run now one of the images in a container, we create a new process, user and mount space. As discussed in the introduction, this is an isolation concept close to full virtualization. We will see later on what the differences are.
 
