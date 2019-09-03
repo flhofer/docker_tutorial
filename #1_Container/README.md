@@ -260,7 +260,9 @@ docker run -p 80:80 httpd:latest
 
 Now try typing `localhost` in a browser window.
 
-A mount point to a volume instead can be set with `VOLUME` specifying the mount point. On Unix/Linux systems this creates a folder in the file system reflecting the one in the container. So, if we create a volume `/myvolume`, you will have this in the container and in your host. Unfortunately Windows uses virtualization and this doesn't work right out of the box.
+If we want to access to files on our computer or share them between containers we need volumes. A use case could be the web pages of apache, which we want to be able to change from outside, or the program `calc.py` as we don't want to copy it in the image and recompile all the code the time.
+
+A mount point to a volume can be set for example in a docker file with `VOLUME`. On Unix/Linux systems this creates a folder in the file system reflecting the one in the container. So, if we create a volume `/myvolume`, you will have this resource in the container and in your host. Unfortunately Windows uses virtualization and this doesn't work right out of the box.
 
 An other way is to use binding. Lets say we would like to use the file we have on disk for the calculator, so to reflect changes when we add new features. 
 
@@ -272,9 +274,14 @@ docker run --name cont2 -v "$PWD":/home/myapp -it 981dd3fd5830
 $PWD in unix environments is the current working directory. You can also use ".". For fol Windows, use forward slash `/` instead of `\` as it might make some issues.
 
 Now, everytime we start	`cont2` the container accesses the actual file on disk. If you try to change it, you will se the changes in the program if you restart it.
-Volumes support different modes, including remote drives ecc. This direct connection (bind) is only one mode. Additional configuations are described in the [volumes][4] reference.
+Volumes support different modes, including remote drives ecc. This direct connection (bind) is only one mode.
+A volume might also just be mounted in one container and serve as external closed storage.
+Like images and containers, volumes can be created and managed in the docker command line with the subcommand `volume`. Try it out. 
+Additional configuations are described in the [volumes][4] reference.
 
-For the case of active resources, we can set them with `docker run` at creation or with `docker update` later on.
+:grey_question: Why should a container have a volume that is exclusive and not accessible? What might be the purpose?
+
+Type 2 resources of a container can be changed at runtime. We can set them with `docker run` at creation or with `docker update` later on. 
 As example let's try to set the cpu assigned to `cont2`
 
 ```sh
@@ -282,6 +289,18 @@ docker update --cpu-quota 1000 --cpu-period 1000000 cont2
 ```
 
 This sets the amout to 1\% of the total assigned cpu. Try it out a bit yourself. Change the resources and see how it reacts.
+
+## Users and privileges
+
+It is common practice to create users and limit access and privileges of containers. One thing is that a container by default has only one user, `root`. Thus, to limit access, the finised image should use an unprivilegded user that runs the software. For proper access management, commands like `ADD` and `COPY` foresee flags to change the ownership of a file. More details can be found in the [builder refernece][1].
+
+As we have seen previously, a container shares the Kernel with the host (or Virtual machine in case of Windows). To limit the containers access to the host, all containers have no advanced privileges by default. Thus, capabilities such as changing a tasks priority or scheduling policy needs particular privileges. These privileges are given with the `--cap_add=` parameter at container run. Exampple:
+
+```sh
+docker run --cap_add=SYS_NICE mycontainer
+```
+
+adds the capability to change scheduling and priority of tasks. More details on capabilities and allowance can be found in the [run reference][3].
 
 ## Summary
 
