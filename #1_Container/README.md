@@ -243,28 +243,45 @@ These are resources that can be set with existing containers.
 :grey_question: What are the risks if there is no limit to containers?
 
 
-Returning to option 1, we can set these in the image file or at creation. A port for a web client can e.g. be set through the line `EXPOSE 80` and expose port 80. (sample in the introduction video).
-A mount point to a volume instead can be set with `VOLUME` specifying the mount point. Lets say we would like to use the file we have on disk for the calculator, so to reflect changes when we add new features. 
+Returning to resource type 1, we can set these in the image file or at creation. A port for a web client can e.g. be set through the line `EXPOSE 80` and expose port 80. This sets the default port on the image side and makes it available on the configured network adapter. By default, docker creates a virual network with its own IP range.
 
+The port is then accessible in this network. As an example, lets try a default apache2 webserver image. 
+
+```sh
+docker run  httpd:latest
+```
+This downloads the latest image and runs it locally. If you check the [Dockerfile of httpd][7], you can see that it contains `EXPOSE 80`. This tells us that this port is now available in the internal network. If you run it, the output of the console shows you the assigned IP of the webserver. In my case `172.17.0.2`. Putting this address in a Browser should give you the "It works" page.
+
+Now, this runs a simple web server and we have no connection to the outside world yet. The port is accessible only for us. If we now want to map it to be reachable from outsile, we can attach the port to the host with the -p flag. The use it as `-p <host>:<container>`. Running the following makes the web-server also avaiable at your computers ip. 
+
+```sh
+docker run -p 80:80 httpd:latest
+```
+
+Now try typing `localhost` in a browser window.
+
+A mount point to a volume instead can be set with `VOLUME` specifying the mount point. On Unix/Linux systems this creates a folder in the file system reflecting the one in the container. So, if we create a volume `/myvolume`, you will have this in the container and in your host. Unfortunately Windows uses virtualization and this doesn't work right out of the box.
+
+An other way is to use binding. Lets say we would like to use the file we have on disk for the calculator, so to reflect changes when we add new features. 
+
+:information_source: In Windows you have to enable shared drives first. See [this][6] short guide 
 
 ```sh
 docker run --name cont2 -v "$PWD":/home/myapp -it 981dd3fd5830
 ```
-($PWD in unix environments is the current working directory)
+$PWD in unix environments is the current working directory. You can also use ".". For fol Windows, use forward slash `/` instead of `\` as it might make some issues.
 
 Now, everytime we start	`cont2` the container accesses the actual file on disk. If you try to change it, you will se the changes in the program if you restart it.
-Volumes support different modes. This direct connection is only one mode. Additional ways are described in the [volumes][4] reference.
+Volumes support different modes, including remote drives ecc. This direct connection (bind) is only one mode. Additional configuations are described in the [volumes][4] reference.
 
 For the case of active resources, we can set them with `docker run` at creation or with `docker update` later on.
-As example let's try to set the cpu assigned to `cont1`
+As example let's try to set the cpu assigned to `cont2`
 
 ```sh
-docker update --cpu-quota 1000 --cpu-period 1000000 cont1
+docker update --cpu-quota 1000 --cpu-period 1000000 cont2
 ```
 
-This sets the amout to 1\% of the total assigned cpu. 
-
-Try it out a bit yourself. Change the resources and see how it reacts.
+This sets the amout to 1\% of the total assigned cpu. Try it out a bit yourself. Change the resources and see how it reacts.
 
 ## Summary
 
@@ -277,3 +294,5 @@ Finally, we quickly saw how to change a container's resources.
 [3]: <https://docs.docker.com/v17.09/engine/reference/run/> "Docker run reference"
 [4]: <https://docs.docker.com/storage/> "Volumes and Storage"
 [5]: <https://stackoverflow.com/questions/28302178/how-can-i-add-a-volume-to-an-existing-docker-container> "Adding a volume to an existing container"
+[6]: <https://rominirani.com/docker-on-windows-mounting-host-directories-d96f3f056a2c> "Shared volumes on Windows"
+[7]: <https://hub.docker.com/_/httpd> "Apache2 image on Hub-Docker"
