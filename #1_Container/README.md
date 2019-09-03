@@ -36,7 +36,7 @@ ubuntu                  rolling             9f3d7c446553        1 week ago      
 ubuntu                  latest              a2a15febcdf3        1 week ago          64.2MB
 ```
 Note the compact size of the images.
-In alternative to tags, one can also use the *digest*. It is a unique identifier for the image and might be needed if no tag has been given to an image. The IMAGE_ID in the example represents the short notation of the UUID. Thus the same imanges can also be pulled using e.g.  `ubuntu@a2a15febcdf3` as image name, where `@` tells that we are looking for a digest UUID.
+In alternative to tags, one can also use the *digest*. It is a unique identifier for the image and might be needed if no tag has been given to an image. The IMAGE_ID in the example represents the short notation of the UUID. Thus the same imanges can also be pulled using e.g. `ubuntu@a2a15febcdf3` as image name, where `@` tells that we are looking for a digest UUID.
 
 These images give us the grounds we need to run containers. If we run now one of the images in a container, we create a new process, user and mount space. As discussed in the introduction, this is an isolation concept close to full virtualization. We will see later on what the differences are.
 
@@ -66,9 +66,9 @@ This means, for this image is actually the same as
 ```sh
 docker run --name cont1 -it ubuntu:latest bash 
 ```
-where you can put any command instead ( we can omit '/bin/' as it is specified in the environment variable path). The command could also be as simple as `echo "Hello world"`, just printing the line to the console and exiting. If no `--name <name>` parameter is given, docker choses a random name for the container. As for images, containers are also distinguished with digest UUIDs.
+You can put any command instead ( we can omit '/bin/' as it is specified in the environment variable path). The command could also be as simple as `echo "Hello world"`, just printing the line to the console and exiting. If no `--name <name>` parameter is given, docker choses a random name for the container. As for images, containers are also distinguished with digest UUIDs.
 
-:grey_question: Why do you think, you can't run the conainer again, even with the same parameters? (check at the end of the chapter for a hint)
+:grey_question: Why do you think you can't run the conainer again, even with the same parameters? (check at the end of the chapter for a hint)
 
 ### Isolation ??
 
@@ -188,18 +188,18 @@ You can observe these details by `inspect`ing the two images. You should get som
 
 ## Using Dockerfiles
 
-Sometimes these process tends to be laborious. In addition, if you have to repeat it because of some minor changes, the manual and interactive approach gets to laborious. Thus there is an other way to create custom imanges: the Dockerfile. 
+Sometimes these process tends to be laborious. In addition, if you have to repeat it because of some minor changes, the manual and interactive approach gets too tedious. Thus, there is an other way to create custom imanges: the Dockerfile. 
 
 A Dockerfile contains all the steps needed to create the desired image and does not need any manual intervention (if done right).
 Thus, let's try to create one for the previous python app example.
 
-We don't need to get images. Previously we started from `ubuntu:latest`, and we specify exacly this. In a new empty file called Dockerfile, add this line.
+For this approach we don't need to get any image. Previously we needed the `ubuntu:latest` image and had to download it manually. In this case, we just specify exacly this and docker does the rest. In a new empty file called Dockerfile, add this line:
 
 ```sh
 FROM ubuntu:latest
 ```
  
-The next thing we did, is to install Python. The `RUN` command defines what to execute inside the container. It can also be mutliple lines with an `\` to escape. Let's add
+The next thing we did, is to install Python. The `RUN` command defines what to execute inside the container. It can also be mutliple lines with an `\` to escape at the end of the previous line. Let's add the installation commands we used
 
 ```sh
 RUN apt-get update && \ 
@@ -216,6 +216,7 @@ WORKDIR /home/myapp
 COPY calc.py .
 ```
 
+There is also an `ADD` command that is very similar to `COPY`, but it features also automatic extraction of archives ecc.
 Lastly, we have to define our default behaviour, what happens if somebody starts the container. We would like to run our calculator, so let's put it in with `CMD`
 
 ```sh
@@ -223,10 +224,11 @@ CMD ["python", "calc.py"]
 ```
 
 Now, if somebody runs this image in a container, by default our calculating app is launched.
+If we have to set an environment variable, lets say the executable search path `$PATH`, we can set that with `ENV`. 
 
 Final step, build the image. Just run `docker build .` to compile the image. With the flag -t you can specify an optional image name.
 The result should be something like `Successfully built 3c7a3b8cbbd6`.
-If you now run it as a new container, either with name or the resulting UUID, you get the calculator running: `docker run -it 3c7a3b8cbbd6`.
+If you now run it as a new container, either with name you specified (optional via -t) or the resulting UUID, you get the calculator running: `docker run -it 3c7a3b8cbbd6`.
 
 See [Builder reference][1] for more options.
 
