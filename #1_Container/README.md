@@ -294,13 +294,14 @@ This sets the amout to 1\% of the total assigned cpu. Try it out a bit yourself.
 
 It is common practice to create users and limit access and privileges of containers. One thing is that a container by default has only one user, `root`. Thus, to limit access, the finised image should use an unprivilegded user that runs the software. For proper access management, commands like `ADD` and `COPY` foresee flags to change the ownership of a file. More details can be found in the [builder refernece][1].
 
-As we have seen previously, a container shares the Kernel with the host (or Virtual machine in case of Windows). To limit the containers access to the host, all containers have no advanced privileges by default. Thus, capabilities such as changing a tasks priority or scheduling policy needs particular privileges. These privileges are given with the `--cap_add=` parameter at container run. Exampple:
+As we have seen previously, a container shares the Kernel with the host (or Virtual machine in case of Windows). To limit the containers access to the host, all containers have no advanced privileges by default. Thus, capabilities such as changing a tasks priority or scheduling policy needs particular privileges. These privileges are given with the `--cap-add=` parameter at container run. Example:
 
 ```sh
-docker run --cap_add=SYS_NICE mycontainer
+docker run --cap-add=SYS_NICE mycontainer
 ```
 
-adds the capability to change scheduling and priority of tasks. More details on capabilities and allowance can be found in the [run reference][3].
+adds the capability to change scheduling and priority of tasks. In addition, default capabilities such as changing the ownership od access to files can be dropped with `--cap-drop=`. There is a `--privileged` flag that enables full access, but it's highly discouraged.
+More details on capabilities and allowance can be found in the [run reference][3].
 
 ## Summary
 
