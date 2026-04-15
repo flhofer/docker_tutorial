@@ -195,6 +195,10 @@ Thus, let's try to create one for the previous Python app example.
 
 :information_source: Keep three practical Dockerfile habits in mind: use `docker build --pull` regularly to refresh base layers, keep a `.dockerignore` file, and use multi-stage builds when applications have separate build and runtime needs ([8]).
 
+:information_source: Modern Docker builds use BuildKit through Buildx by default. `docker build` is the common entry point, while `docker buildx build` exposes advanced options ([9]).
+
+:information_source: A current security baseline is to track image vulnerabilities and metadata (SBOM/provenance). Docker Scout and build attestations are the Docker-native path for this ([10]).
+
 For this approach, we do not need to pull an image manually. In a new empty file called Dockerfile, add this line:
 
 ```sh
@@ -288,6 +292,8 @@ This sets the amount to 1\% of the total assigned CPU. Try it out a bit yourself
 
 It is common practice to create users and limit access and privileges in containers. By default, a container has only one user, `root`. Thus, to restrict access, the finished image should use an unprivileged user that runs the software. For proper access management, commands like `ADD` and `COPY` support flags to change file ownership. More details can be found in the [builder reference][1].
 
+:information_source: Rootless mode is now a common hardening option because it runs the Docker daemon and containers without root privileges on the host ([11]).
+
 As we have seen previously, a container shares the kernel with the host (or Virtual machine in the case of Windows). To limit the container's host access, all containers have no advanced privileges by default. Thus, capabilities such as changing a task's priority or scheduling policy need particular privileges. These privileges are given with the `--cap-add=` parameter at container run. Example:
 
 ```sh
@@ -311,3 +317,6 @@ Finally, we quickly saw how to change a container's resources.
 [6]: <https://docs.docker.com/desktop/settings-and-maintenance/settings/#file-sharing> "Shared volumes on Windows"
 [7]: <https://hub.docker.com/_/httpd> "Apache2 image on Hub-Docker"
 [8]: <https://docs.docker.com/build/building/best-practices/> "Dockerfile best practices"
+[9]: <https://docs.docker.com/build/concepts/overview/> "Buildx and BuildKit overview"
+[10]: <https://docs.docker.com/scout/> "Docker Scout overview"
+[11]: <https://docs.docker.com/engine/security/rootless/> "Rootless mode"

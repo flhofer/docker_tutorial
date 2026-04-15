@@ -7,6 +7,8 @@ Take, for example, the following composition file.
 
 :information_source: Docker Compose now follows the Compose Specification ([4]). Older 2.x and 3.x formats were merged, which is why modern examples usually omit a top-level `version`.
 
+:information_source: Use `docker compose` (space) for current workflows. The standalone Compose binary is now a legacy install path ([7]).
+
 ```yaml
 services:
   python:
@@ -47,6 +49,8 @@ An extension of a composition is a Swarm. Docker Swarm is one of several ways to
 
 :information_source: For local development, Compose is usually the default choice. Swarm is more suitable when you need scheduling and scaling across multiple Docker hosts ([6]).
 
+:information_source: Do not confuse Swarm mode with standalone "classic" Swarm, which has been removed from modern Docker Engine releases ([8]).
+
 :grey_question: So, when is this really useful? Who might be applying this technology?
 
 
@@ -58,3 +62,5 @@ An extension of a composition is a Swarm. Docker Swarm is one of several ways to
 [4]: <https://docs.docker.com/reference/compose-file/> "Compose Specification reference"
 [5]: <https://docs.docker.com/compose/how-tos/startup-order/> "Compose startup order and readiness"
 [6]: <https://docs.docker.com/engine/swarm/> "Swarm mode overview"
+[7]: <https://docs.docker.com/compose/install/> "Compose install methods"
+[8]: <https://docs.docker.com/engine/deprecated/> "Engine deprecated and removed features"
