@@ -45,6 +45,34 @@ In the examples below, replace `enp3s0` with your real test interface.
 * Host shim interface: extra macvlan interface to let host talk to macvlan containers
 * netns passthrough: move a physical NIC into another namespace (exclusive ownership)
 
+## Bridge vs host vs macvlan (quick comparison)
+
+* `bridge` (default): containers are isolated behind Docker networking; host access is typically through published ports (`-p`).
+* `host`: container shares host network namespace; no port mapping isolation.
+* `macvlan`: container appears as a peer on L2 with its own MAC on the physical segment.
+
+For Compose projects, Docker typically creates a dedicated bridge network per project by default. Use `macvlan` only when you need L2-level behavior (for example fieldbus/protocol scenarios).
+
+## Networking checklist (pre-check / verify / rollback)
+
+Pre-check:
+
+* Confirm interface names with `ip link`.
+* Confirm subnets and routes with `ip -4 addr` and `ip route`.
+* Reserve static container IPs outside DHCP range.
+
+Verify during setup:
+
+* `docker network ls` -> expected network exists.
+* `docker network inspect <network>` -> expected driver/subnet/attached endpoints.
+* `docker inspect <container>` -> expected network attachment and IP.
+* `docker exec <container> ip addr` and `ip route` -> expected interfaces/routes.
+
+Rollback readiness:
+
+* Keep cleanup commands ready before changing NIC namespace.
+* Keep console access to host in case remote network access is interrupted.
+
 ## Lab A: macvlan with deterministic IPs
 
 Create a user-defined macvlan network:
