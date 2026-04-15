@@ -1,12 +1,12 @@
 # Containerization - Hands-on session for Docker
-EMSE Docker tutorial
+EMSE and `Cloud Computing and Distributed Systems` Course Docker tutorial
 
 To get everyone aligned and ready to go, I am sending you some short
 introductory videos. Please install the software and try them out. If
-you have issues, contact me BEFORE the tutorial.
-I would like to have you all on
+you have issues, contact me BEFORE the class. I would like to have you all on
 track to use these tools in your accustomed environment and in
-a productive way during the tutorial.
+a productive way during class. For those of you who already have
+basic understanding of Docker and have used it before: you can skip the videos.
 
 What is Docker?
 https://www.youtube.com/watch?v=YFl2mCHdv24
