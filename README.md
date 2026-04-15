@@ -3,8 +3,8 @@ EMSE Docker tutorial
 
 To get everyone aligned and ready to go, I am sending you some short
 introductory videos. Please install the software and try them out. If
-you have issues, contact me BEFORE the tutorial
-(florian.hofer@stud-inf.unibz.it). I would like to have you all on
+you have issues, contact me BEFORE the tutorial.
+I would like to have you all on
 track to use these tools in your accustomed environment and in
 a productive way during the tutorial.
 
