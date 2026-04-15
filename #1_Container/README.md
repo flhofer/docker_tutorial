@@ -8,6 +8,37 @@ There are essentially two ways to create an image:
 
 We will see in the following how to create them using both approaches.
 
+## Before you start (2 minutes)
+
+Run these checks once:
+
+```sh
+docker version
+docker run hello-world
+```
+
+If `docker run hello-world` fails with a permissions error on Linux, try `sudo docker run hello-world` or add your user to the `docker` group. On macOS/Windows, ensure Docker Desktop is running.
+
+## Quick mental model
+
+* Image: a read-only template of your environment and app.
+* Container: a running instance of an image.
+* Registry: where images are stored (for example Docker Hub).
+* Volume: persistent data kept outside a container lifecycle.
+* Network: how containers communicate with each other and the host.
+
+## Minimal command cheat sheet
+
+* `docker pull <image>`: download an image.
+* `docker images`: list local images.
+* `docker run ...`: create and start a container.
+* `docker ps` / `docker ps -a`: list running/all containers.
+* `docker logs <container>`: read container logs.
+* `docker exec -it <container> bash`: open a shell in a running container.
+* `docker stop <container>`: stop a running container.
+* `docker rm <container>`: remove a container.
+* `docker rmi <image>`: remove an image.
+
 ## The image and its use
 
 Let's start with the basics: the Ubuntu image. We will download a ready image for an Ubuntu environment and play with it.
@@ -110,6 +141,12 @@ Hello 9
 Hello 10
 ```
 In fact, it returns a newly launched process number (10 in my case) and executes it in the background. As long as `bash` is alive, the new process runs. If you rerun it but type `exit` before all lines are printed, the result is different. Try to come up with an explanation.
+
+### Reading command output quickly
+
+When you run `docker images`, focus on `REPOSITORY`, `TAG`, and `IMAGE ID`.
+When you run `docker ps -a`, focus on `STATUS`, `PORTS`, and `NAMES`.
+When you run `docker inspect`, first locate `Config`, `Mounts`, and `NetworkSettings`.
 
 :information_source: If you use programs such as a web server or a database management system, those run daemons remain active until terminated by event or user.
 
@@ -302,6 +339,22 @@ docker run --cap-add=SYS_NICE mycontainer
 
 Adds the capability to change scheduling and priority of tasks. Also, default capabilities such as changing the ownership of access to files can be dropped with `--cap-drop=`. There is a `--privileged` flag that enables full access, but it's highly discouraged.
 More details on capabilities and allowance can be found in the [run reference][3].
+
+## Beginner troubleshooting
+
+* Error: port already in use (`bind: address already in use`): change host port mapping, for example `-p 8080:80`.
+* Error: permission denied on Docker socket: use `sudo` on Linux or configure Docker group permissions.
+* Container exits immediately: check `docker logs <container>` and verify the main process/command.
+* Volume/bind mount not working: verify host path and use Unix-style slashes on Windows bind mount paths.
+
+## 10-minute practice
+
+1. Pull and run Ubuntu: `docker pull ubuntu:latest` then `docker run --name demo1 -it ubuntu:latest bash`.
+2. Exit and inspect state: `exit`, then `docker ps -a`.
+3. Restart and run a command: `docker start -i demo1`, then `uname -a`.
+4. Build this module image: `docker build -t calc:demo .`.
+5. Run it once: `docker run --rm -it calc:demo`.
+6. Verify cleanup/listing with `docker ps -a` and `docker images`.
 
 ## Summary
 
