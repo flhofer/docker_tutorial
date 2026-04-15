@@ -139,8 +139,8 @@ So, let's start the container again.
 docker start -i cont1
 ```
 
-We now install `Python` to run the little calculator demo program inside the container. Thus, type `apt-get update` to update the list of available software, then `apt-get install python`. It will prompt you if you want to install the packets.
-Now, we have a running environment for python programs inside the container. If we need more libraries, we can also add software like `pip` to manage Python. However, we are fine for now.
+We now install `Python 3` to run the little calculator demo program inside the container. Thus, type `apt-get update` to update the list of available software, then `apt-get install python3`. It will prompt you if you want to install the packets.
+Now, we have a running environment for Python programs inside the container. If we need more libraries, we can also add software like `pip` to manage Python. However, we are fine for now.
 
 The next step is to bring the app into the container. Instead of typing `exit`, we use `CTRL-p` `CTRL-q` keys if we need to return to the console. This will leave the container running, e.g., continue installing software, etc.
 To copy files to and from the container, we can use `docker cp`, which works like the Unix cp. If the source or destination is a container, the path is preceded by `<containername>:`.
@@ -155,7 +155,7 @@ Let's run our program:
 
 ```sh
 cd /home
-python calc.py
+python3 calc.py
 ```
 
 Done. What if we did a lot of work and want to make these changes permanent, like an image?
@@ -191,27 +191,17 @@ You can observe these details by `inspecting the two images. You should get some
 Sometimes these process tends to be laborious. Also, if you have to repeat it because of some minor changes, the manual and interactive approach gets too tedious. Thus, there is another way to create custom images: the Dockerfile. 
 
 A Dockerfile contains all the steps needed to create the desired image and does not require any manual intervention (if done right).
-Thus, let's try to create one for the previous python app example.
+Thus, let's try to create one for the previous Python app example.
 
 For this approach, we don't need to get an image. Previously we needed the `ubuntu:latest` image and had to download it manually. In this case, we just specify exactly this, and docker does the rest. In a new empty file called Dockerfile, add this line:
 
 ```sh
-FROM ubuntu:latest
+FROM python:3.12-slim
 ```
  
-The next thing we did, is to install Python. The `RUN` command defines what to execute inside the container. It can also be multiple lines with an `\` to escape at the end of the previous line. Let's add the installation commands we used
+The base image already includes Python 3. Now, create a directory context with `WORKDIR`, and copy the app's file with `COPY`.
 
 ```sh
-RUN apt-get update && \ 
-	apt-get install -y python
-```
-
-(-y so it doesn't prompt)
-
-Now, create a directory, again with `RUN`, and copy the app's file with `COPY`. The command `WORKDIR` comes in handy to define a working directory and avoid specifying the path again all the time.
-
-```sh
-RUN mkdir /home/myapp
 WORKDIR /home/myapp
 COPY calc.py .
 ```
@@ -220,7 +210,7 @@ There is also an `ADD` command that is very similar to `COPY`, but it also featu
 Lastly, we have to define our default behavior, what happens if somebody starts the container. We would like to run our calculator, so let's put it in with `CMD`.
 
 ```sh
-CMD ["python", "calc.py"]
+CMD ["python3", "calc.py"]
 ```
 
 If somebody runs this image in a container, our calculating app is launched by default.
