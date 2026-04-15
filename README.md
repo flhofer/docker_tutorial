@@ -24,6 +24,11 @@ If you wish, you can then try out a bit yourself, starting with a
 beginner tutorial here
 https://docs.docker.com/get-started/
 
+Suggested learning path:
+* Docker workshop parts 1-6 for container basics and data persistence
+* Docker workshop part 7 for Compose
+* Docker Swarm tutorial after finishing module 2 in this course
+
 This three-level tutorial introduces Docker use as follows:
 
 * Container creation, parts one and two

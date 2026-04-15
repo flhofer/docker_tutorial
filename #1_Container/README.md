@@ -193,6 +193,8 @@ Sometimes this process tends to be laborious. Also, if you have to repeat it bec
 A Dockerfile contains all the steps needed to create the desired image and does not require any manual intervention (if done right).
 Thus, let's try to create one for the previous Python app example.
 
+:information_source: Keep three practical Dockerfile habits in mind: use `docker build --pull` regularly to refresh base layers, keep a `.dockerignore` file, and use multi-stage builds when applications have separate build and runtime needs ([8]).
+
 For this approach, we do not need to pull an image manually. In a new empty file called Dockerfile, add this line:
 
 ```sh
@@ -308,3 +310,4 @@ Finally, we quickly saw how to change a container's resources.
 [5]: <https://stackoverflow.com/questions/28302178/how-can-i-add-a-volume-to-an-existing-docker-container> "Adding a volume to an existing container"
 [6]: <https://docs.docker.com/desktop/settings-and-maintenance/settings/#file-sharing> "Shared volumes on Windows"
 [7]: <https://hub.docker.com/_/httpd> "Apache2 image on Hub-Docker"
+[8]: <https://docs.docker.com/build/building/best-practices/> "Dockerfile best practices"

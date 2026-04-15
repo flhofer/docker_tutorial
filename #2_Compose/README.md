@@ -5,6 +5,8 @@
 Docker Compose is a command-line interface for Docker that can be used for a variety of goals. Similar to Docker, it uses a configuration file that helps automate a process. The file, or *composition*, is a set of information that describes how containers have to interact with the environment. However, one goal is often overlooked.
 Take, for example, the following composition file.
 
+:information_source: Docker Compose now follows the Compose Specification ([4]). Older 2.x and 3.x formats were merged, which is why modern examples usually omit a top-level `version`.
+
 ```yaml
 services:
   python:
@@ -33,6 +35,8 @@ As you may already have guessed, Docker Compose foresees parameters to manage th
 
 :grey_question: Which are they? Try to set up a memory limit for the database. 
 
+:information_source: Startup order and readiness are different topics. `depends_on` controls startup order, while readiness is usually handled with `healthcheck` and conditions in Compose ([5]).
+
 A thing not discussed previously is the flexibility of volumes. Beyond the traditional bind mounting of a folder, volumes can also be shared only among containers. They are created and labeled and then assigned to the instances requiring them.
 
 :grey_question: In which cases such a shared volume might be useful?
@@ -40,6 +44,8 @@ A thing not discussed previously is the flexibility of volumes. Beyond the tradi
 ## Swarm
 
 An extension of a composition is a Swarm. Docker Swarm is one of several ways to use multiple nodes to provide a particular service. The [Voting App][3] example in the tutorial shows how an application can use parallelized instances. With multiple nodes, the service can be spawned on many servers or virtual instances. If you have not tried it out yet, do it now.
+
+:information_source: For local development, Compose is usually the default choice. Swarm is more suitable when you need scheduling and scaling across multiple Docker hosts ([6]).
 
 :grey_question: So, when is this really useful? Who might be applying this technology?
 
@@ -49,3 +55,6 @@ An extension of a composition is a Swarm. Docker Swarm is one of several ways to
 [1]: <https://docs.docker.com/compose/gettingstarted/> "Docker compose, getting started"
 [2]: <https://docs.docker.com/reference/samples/> "Docker samples"
 [3]: <https://github.com/dockersamples/example-voting-app> "Deploying to a Swarm"
+[4]: <https://docs.docker.com/reference/compose-file/> "Compose Specification reference"
+[5]: <https://docs.docker.com/compose/how-tos/startup-order/> "Compose startup order and readiness"
+[6]: <https://docs.docker.com/engine/swarm/> "Swarm mode overview"
