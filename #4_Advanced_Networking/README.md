@@ -83,21 +83,21 @@ docker network create \
   --subnet=192.168.50.0/24 \
   --gateway=192.168.50.1 \
   -o parent=enp3s0 \
-  uc4-macvlan
+  advnet-macvlan
 ```
 
 Run two containers with fixed addresses:
 
 ```sh
-docker run -d --name uc4-node1 --network uc4-macvlan --ip 192.168.50.10 alpine sleep infinity
-docker run -d --name uc4-node2 --network uc4-macvlan --ip 192.168.50.11 alpine sleep infinity
+docker run -d --name advnet-node1 --network advnet-macvlan --ip 192.168.50.10 alpine sleep infinity
+docker run -d --name advnet-node2 --network advnet-macvlan --ip 192.168.50.11 alpine sleep infinity
 ```
 
 Verify:
 
 ```sh
-docker inspect uc4-node1 --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
-docker exec uc4-node1 ping -c 3 192.168.50.11
+docker inspect advnet-node1 --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
+docker exec advnet-node1 ping -c 3 192.168.50.11
 ```
 
 ## Host-to-container reachability workaround
@@ -106,9 +106,9 @@ By default, host and macvlan containers often cannot talk directly.
 Create a host shim interface:
 
 ```sh
-sudo ip link add uc4-shim link enp3s0 type macvlan mode bridge
-sudo ip addr add 192.168.50.254/24 dev uc4-shim
-sudo ip link set uc4-shim up
+sudo ip link add advnet-shim link enp3s0 type macvlan mode bridge
+sudo ip addr add 192.168.50.254/24 dev advnet-shim
+sudo ip link set advnet-shim up
 ```
 
 Test from host:
@@ -124,10 +124,10 @@ This is more invasive than macvlan. Use only on a dedicated lab interface.
 Example flow:
 
 ```sh
-PID=$(docker inspect --format '{{.State.Pid}}' uc4-node1)
-sudo ip netns attach uc4-node1-ns "$PID"
-sudo ip link set enp3s0 netns uc4-node1-ns
-sudo ip netns exec uc4-node1-ns ip link set enp3s0 up
+PID=$(docker inspect --format '{{.State.Pid}}' advnet-node1)
+sudo ip netns attach advnet-node1-ns "$PID"
+sudo ip link set enp3s0 netns advnet-node1-ns
+sudo ip netns exec advnet-node1-ns ip link set enp3s0 up
 ```
 
 Important:
@@ -138,14 +138,14 @@ Important:
 Move interface back to host namespace:
 
 ```sh
-sudo ip netns exec uc4-node1-ns ip link set enp3s0 netns 1
+sudo ip netns exec advnet-node1-ns ip link set enp3s0 netns 1
 sudo ip link set enp3s0 up
-sudo ip netns del uc4-node1-ns
+sudo ip netns del advnet-node1-ns
 ```
 
 ## Reading output quickly
 
-* `docker network inspect uc4-macvlan`: check `Driver`, `Subnet`, and connected container endpoints
+* `docker network inspect advnet-macvlan`: check `Driver`, `Subnet`, and connected container endpoints
 * `ip link`: verify parent NIC and shim state (`UP`)
 * `ip route`: verify route to macvlan subnet after shim setup
 
@@ -160,10 +160,10 @@ sudo ip netns del uc4-node1-ns
 ## Cleanup / rollback
 
 ```sh
-docker rm -f uc4-node1 uc4-node2 2>/dev/null || true
-docker network rm uc4-macvlan 2>/dev/null || true
-sudo ip link del uc4-shim 2>/dev/null || true
-sudo ip netns del uc4-node1-ns 2>/dev/null || true
+docker rm -f advnet-node1 advnet-node2 2>/dev/null || true
+docker network rm advnet-macvlan 2>/dev/null || true
+sudo ip link del advnet-shim 2>/dev/null || true
+sudo ip netns del advnet-node1-ns 2>/dev/null || true
 ```
 
 ## Reference material
