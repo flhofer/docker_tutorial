@@ -86,6 +86,54 @@ docker network create \
   advnet-macvlan
 ```
 
+### Automatic vs static IP assignment (important)
+
+By default, Docker assigns container IPs automatically on user-defined networks.
+This also applies to user-defined `macvlan` networks.
+
+You only need to specify an IP at container start if you want deterministic/static addressing (for example industrial endpoints with fixed peer configuration).
+
+Examples:
+
+* Automatic assignment (no fixed IP):
+
+```sh
+docker run -d --name advnet-node1 --network advnet-macvlan alpine sleep infinity
+```
+
+* Static assignment (fixed IP at start):
+
+```sh
+docker run -d --name advnet-node1 --network advnet-macvlan --ip 192.168.50.10 alpine sleep infinity
+```
+
+Compose equivalent for static addressing:
+
+```yaml
+services:
+  app:
+    image: alpine
+    command: sleep infinity
+    networks:
+      fieldbus:
+        ipv4_address: 192.168.50.10
+
+networks:
+  fieldbus:
+    driver: macvlan
+    driver_opts:
+      parent: enp3s0
+    ipam:
+      config:
+        - subnet: 192.168.50.0/24
+          gateway: 192.168.50.1
+```
+
+Notes:
+
+* For `docker run --ip`, the network must have a subnet configured.
+* For Compose `ipv4_address`, the network needs an `ipam` subnet that covers that address.
+
 Run two containers with fixed addresses:
 
 ```sh
@@ -174,3 +222,7 @@ sudo ip netns del advnet-node1-ns 2>/dev/null || true
   * https://docs.docker.com/engine/network/drivers/macvlan/
 * Docker networking tutorials:
   * https://docs.docker.com/engine/network/tutorials/
+* Static IP with `docker run --ip`:
+  * https://docs.docker.com/reference/cli/docker/container/run/
+* Compose `ipv4_address` and `ipam` requirement:
+  * https://docs.docker.com/compose/compose-file/05-services/
