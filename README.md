@@ -29,11 +29,12 @@ Suggested learning path:
 * Docker workshop part 7 for Compose
 * Docker Swarm tutorial after finishing module 2 in this course
 
-This three-level tutorial introduces Docker use as follows:
+This tutorial introduces Docker use as follows:
 
 * Container creation, parts one and two
 * Containers in composition
 * Personalized use of containers
+* Optional advanced networking (macvlan and netns NIC passthrough)
 
 Each part is in its own folder with step-by-step instructions and a finished file. Try it yourself first to gain experience. If you have issues, consult the final version.
 
