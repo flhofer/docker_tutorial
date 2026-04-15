@@ -22,6 +22,35 @@ services:
 With this in mind, think of Docker Compose as an extension of the Docker engine.
 In the following, we will see how to actually compose a service.
 
+## Before you start (2 minutes)
+
+Run these checks once in this module folder:
+
+```sh
+docker compose version
+docker compose config
+```
+
+If `docker compose` is not found, install/enable the Compose plugin as described in [7].
+
+## Quick mental model
+
+* Service: one container definition in `docker-compose.yml`.
+* Project: the full app described by the Compose file.
+* Network: shared by services in the same project by default.
+* Volume: persistent/shared data managed by Compose or bind mounts.
+* Lifecycle: `up` starts, `logs` inspects, `down` stops/removes.
+
+## Minimal Compose command cheat sheet
+
+* `docker compose up -d`: create/start services in background.
+* `docker compose ps`: list service container status.
+* `docker compose logs -f <service>`: follow service logs.
+* `docker compose exec <service> <cmd>`: run a command in a running service.
+* `docker compose config`: validate and render final config.
+* `docker compose down`: stop and remove containers/network.
+* `docker compose down -v`: also remove named volumes.
+
 ## Create a compose file
 
 One of the most straightforward uses of a composition is a web service. It needs a stable operating system, a web server, a database, and an interpreter for an eventual server-side language like PHP or Python.
@@ -39,6 +68,12 @@ As you may already have guessed, Docker Compose foresees parameters to manage th
 
 :information_source: Startup order and readiness are different topics. `depends_on` controls startup order, while readiness is usually handled with `healthcheck` and conditions in Compose ([5]).
 
+### Reading command output quickly
+
+When you run `docker compose ps`, focus on `State`/`Status`, `Ports`, and service names.
+When you run `docker compose logs`, focus on repeated errors and startup messages.
+When you run `docker compose config`, verify image tags, volume mounts, and ports.
+
 A thing not discussed previously is the flexibility of volumes. Beyond the traditional bind mounting of a folder, volumes can also be shared only among containers. They are created and labeled and then assigned to the instances requiring them.
 
 :grey_question: In which cases such a shared volume might be useful?
@@ -53,7 +88,20 @@ An extension of a composition is a Swarm. Docker Swarm is one of several ways to
 
 :grey_question: So, when is this really useful? Who might be applying this technology?
 
+## Beginner troubleshooting
 
+* `docker compose up` fails on port conflicts: change host ports in the Compose file.
+* Service starts but app is unavailable: check `docker compose logs <service>` first.
+* App container fails because DB is not ready yet: add readiness checks (`healthcheck`) and dependency conditions ([5]).
+* Old data causes confusing behavior: reset with `docker compose down -v` and start again.
+
+## 10-minute practice
+
+1. Validate config in `#2_Compose`: `docker compose config`.
+2. Build and start the Python service: `docker compose up -d --build`.
+3. Check state: `docker compose ps`.
+4. Inspect output: `docker compose logs python`.
+5. Stop and cleanup: `docker compose down`.
 
 
 [1]: <https://docs.docker.com/compose/gettingstarted/> "Docker compose, getting started"
