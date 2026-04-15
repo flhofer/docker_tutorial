@@ -14,7 +14,7 @@ We create a container that compiles our Java program inside this folder. Using a
 
 Step 2. Once done, we try to set the container as a stand-alone application setting the container's default behavior.
 
-Let's say that HelloWorld is our great final application that accepts a lot of parameters etc., and we use the container to provide the environment it needs to execute. To achieve this, we use the `ENRTYPOINT` command in the Dockerfile
+Let's say that HelloWorld is our great final application that accepts a lot of parameters etc., and we use the container to provide the environment it needs to execute. To achieve this, we use the `ENTRYPOINT` command in the Dockerfile
 The difference between command and entry point is that the latter defines the standard executable but leaves room for parameters.
 
 :grey_question: How does this differ from CMD, and when would you use it?
@@ -29,7 +29,7 @@ If a repository has to be automated, it usually contains a `yml` file configurin
 
 ```yaml
 default:
-  image: openjdk:7
+  image: eclipse-temurin:21-jdk
 
 stages:
   - build
@@ -73,9 +73,8 @@ docker push gitlab.inf.unibz.it:4567/<user-name>/<repo-name>/<container>
 
 You might need to login (`docker login <registry>`) before pushing to the registry is possible. These Docker images can then be used in the CI flow to build, test and deploy an application in a custom or private manner. More details in the [manual][3]. 
 
-[1]: <https://docs.gitlab.com/ee/ci/runners/> "Runner configuration" 
-[2]: <https://gitlab.inf.unibz.it/help/ci/pipelines.md> "Automation pipeline"
-[3]: <https://gitlab.inf.unibz.it/help/ci/docker/using_docker_build.md> "Docker build in CI"
-[4]: <https://gitlab.inf.unibz.it/help/ci/docker/using_docker_images.md> "Docker images in CI"
-[5]: <https://gitlab.inf.unibz.it/help/ci/yaml/README.md> "YAML CI - Gitlab"
-
+[1]: <https://docs.gitlab.com/ci/runners/> "Runner configuration" 
+[2]: <https://docs.gitlab.com/ci/pipelines/> "Automation pipeline"
+[3]: <https://docs.gitlab.com/ci/docker/using_docker_build/> "Docker build in CI"
+[4]: <https://docs.gitlab.com/ci/docker/using_docker_images/> "Docker images in CI"
+[5]: <https://docs.gitlab.com/ci/yaml/> "YAML CI - Gitlab"

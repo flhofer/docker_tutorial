@@ -311,10 +311,10 @@ In this tutorial, we saw basic interaction with containers and their images. We 
 Finally, we quickly saw how to change a container's resources.
 
 
-[1]: <https://docs.docker.com/engine/reference/builder/> "Docker Builder reference"   
+[1]: <https://docs.docker.com/reference/dockerfile/> "Docker Builder reference"   
 [2]: <https://www.linuxjournal.com/content/everything-you-need-know-about-linux-containers-part-i-linux-control-groups-and-process> "Linux Control groups and process"
-[3]: <https://docs.docker.com/v17.09/engine/reference/run/> "Docker run reference"
-[4]: <https://docs.docker.com/storage/> "Volumes and Storage"
+[3]: <https://docs.docker.com/engine/containers/run/> "Docker run reference"
+[4]: <https://docs.docker.com/engine/storage/> "Volumes and Storage"
 [5]: <https://stackoverflow.com/questions/28302178/how-can-i-add-a-volume-to-an-existing-docker-container> "Adding a volume to an existing container"
-[6]: <https://rominirani.com/docker-on-windows-mounting-host-directories-d96f3f056a2c> "Shared volumes on Windows"
+[6]: <https://docs.docker.com/desktop/settings-and-maintenance/settings/#file-sharing> "Shared volumes on Windows"
 [7]: <https://hub.docker.com/_/httpd> "Apache2 image on Hub-Docker"

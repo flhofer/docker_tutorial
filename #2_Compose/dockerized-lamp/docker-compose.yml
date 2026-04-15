@@ -1,16 +1,15 @@
-version: '3'
 services:
     php-apache:
-        image: php:7.2.1-apache
+        image: php:8.3-apache
         ports:
             - 80:80
         volumes:
             - ./DocumentRoot:/var/www/html:z
-        links:
-            - 'mariadb'
+        depends_on:
+            - mariadb
 
     mariadb:
-        image: mariadb:10.1
+        image: mariadb:11
         volumes:
             - mariadb:/var/lib/mysql
         environment:
@@ -23,4 +22,3 @@ services:
 
 volumes:
     mariadb:
-

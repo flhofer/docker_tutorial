@@ -10,7 +10,7 @@ a productive way during the tutorial.
 
 What is Docker?
 https://www.youtube.com/watch?v=YFl2mCHdv24
-https://docs.docker.com/v17.09/engine/installation/#updates-and-patches
+https://docs.docker.com/engine/install/
 
 What is Docker Compose?
 https://www.youtube.com/watch?v=Qw9zlE3t8Ko
@@ -22,7 +22,7 @@ https://git-scm.com/downloads
 
 If you wish, you can then try out a bit yourself, starting with a
 beginner tutorial here
-https://github.com/docker/labs
+https://docs.docker.com/get-started/
 
 This three-level tutorial introduces the use of Docker as in the following:
 
