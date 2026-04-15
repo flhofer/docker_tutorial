@@ -1,6 +1,6 @@
 # 1 - Building images and creating containers
 
-If you watched the tutorial video, you know that there are two primary components for docker: images and containers. An image contains the software run in a container; esentially, every container needs some minimal image to run something.
+If you watched the tutorial video, you know that there are two primary Docker components: images and containers. An image contains the software run in a container; essentially, every container needs a minimal image to run something.
 There are essentially two ways to create an image:
 
 * Via an interactive prompt and commit
@@ -10,8 +10,8 @@ We will see in the following how to create them using both approaches.
 
 ## The image and its use
 
-Let's start with the basics, image: Ubuntu. We will download a ready image for an Ubuntu environment and play a bit with it. 
-Depending on your system settings, you may need additional privileges to access control groups ([CGroups][2]), a feature used in Docker.  Thus for all `docker` commands, you might need either a preceding `sudo` or root login (MacOs/Linux/Unix).
+Let's start with the basics: the Ubuntu image. We will download a ready image for an Ubuntu environment and play with it.
+Depending on your system settings, you may need additional privileges to access control groups ([CGroups][2]), a feature used in Docker. Thus, for all `docker` commands, you might need either a preceding `sudo` or root login (macOS/Linux/Unix).
 So, let's pull the image. Open the Docker console, enter a new folder or create one, and type:
 
 ```sh
@@ -62,19 +62,19 @@ For `ubuntu:latest`, this gives a JSON format output containing the following.
             ],
  ```
 
-This means for this image is actually the same as 
+For this image, this is actually the same as:
 ```sh
 docker run --name cont1 -it ubuntu:latest bash 
 ```
-You can put any command instead ( we can omit '/bin/' as specified in the environment variable path). The command could also be as simple as `echo "Hello world"`, just printing the line to the console and exiting. If no `--name <name>` parameter is given, docker chooses a random name for the container. As for images, containers are also distinguished with digest UUIDs.
+You can put any command instead (we can omit `/bin/` as specified in the environment variable path). The command could also be as simple as `echo "Hello world"`, just printing the line to the console and exiting. If no `--name <name>` parameter is given, Docker chooses a random name for the container. As for images, containers are also distinguished with digest UUIDs.
 
 :grey_question: Why do you think you can't rerun the container, even with the same parameters? (check at the end of the chapter for a hint)
 
 ### Isolation ??
 
-Without deleting any container, we can start our `cont1` again by typing `docker container start -i cont1`, and we are back in the bash. ( here -i stands for interactive )
-Here now the curious thing, the actual difference to virtualization.
-In the bash, type `uname -a`. You should have a different output for each *version* of your systems. mine is
+Without deleting any container, we can start `cont1` again by typing `docker container start -i cont1`, and we are back in Bash (`-i` stands for interactive).
+Here comes the curious part: the actual difference from virtualization.
+In Bash, type `uname -a`. You should have a different output for each system version. Mine is:
 
 ```sh
 Linux e024b496d020 5.0.0-25-generic #26~18.04.1-Ubuntu SMP Thu Aug 1 13:51:02 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
@@ -93,7 +93,7 @@ root@e024b496d020:/# ps
     1 pts/0    00:00:00 bash
    34 pts/0    00:00:00 ps
 ```
-The container's main process, the process with number 1, is bash, the command shell, our main/default command. Like said before, the container exits as soon as the process terminates. To demonstrate the effect, try this command while in the container: `for i in {1..10}; do echo "Hello $i"; sleep 1; done &`.
+The container's main process, process number 1, is Bash, the command shell, our main/default command. As mentioned before, the container exits as soon as the process terminates. To demonstrate the effect, try this command while in the container: `for i in {1..10}; do echo "Hello $i"; sleep 1; done &`.
 It should list you a bunch of *Hello* lines, one every second and then end.
 
 ```sh
@@ -109,7 +109,7 @@ Hello 8
 Hello 9
 Hello 10
 ```
-In fact, it returns a newly launched process number, 10 in my case, and executes it in the background. As long as `bash` is alive, the new process runs. If you rerun it but type `exit` before all lines are print, the result is different. Try to come up with an explanation. 
+In fact, it returns a newly launched process number (10 in my case) and executes it in the background. As long as `bash` is alive, the new process runs. If you rerun it but type `exit` before all lines are printed, the result is different. Try to come up with an explanation.
 
 :information_source: If you use programs such as a web server or a database management system, those run daemons remain active until terminated by event or user.
 
@@ -118,7 +118,7 @@ In fact, it returns a newly launched process number, 10 in my case, and executes
 
 The container can be removed with `docker container rm <name>`. If you have a container running in the background, like with -d, it can be stopped or killed using `stop` or `kill` instead of `rm`.
 Running containers can be listed with `docker ps` or `docker container ls`. To show also inactive containers, add the -a flag.
-You can find more information on the docker website, [command reference docker stable][3].
+You can find more information on the Docker website, [Docker run reference][3].
 
 ### Summary
 
@@ -169,7 +169,7 @@ docker commit cont1 <imagename>
 ```
 The image name is optional, but helps to organize things. Moreover, images are incremental. This means only changes to the previous image (here ubuntu:latest) are stored. If you update your container and then commit again with the same name, the image will have a new version on top of `ubuntu:latest`. This allows to incrementally update while saving space. Only changes to the original image are saved. 
 
-You can observe these details by `inspecting the two images. You should get something like the following for the container image.
+You can observe these details by inspecting the two images. You should get something like the following for the container image.
 
 ```sh
         "RootFS": {
@@ -188,12 +188,12 @@ You can observe these details by `inspecting the two images. You should get some
 
 ## Using Dockerfiles
 
-Sometimes these process tends to be laborious. Also, if you have to repeat it because of some minor changes, the manual and interactive approach gets too tedious. Thus, there is another way to create custom images: the Dockerfile. 
+Sometimes this process tends to be laborious. Also, if you have to repeat it because of minor changes, the manual and interactive approach gets too tedious. Thus, there is another way to create custom images: the Dockerfile.
 
 A Dockerfile contains all the steps needed to create the desired image and does not require any manual intervention (if done right).
 Thus, let's try to create one for the previous Python app example.
 
-For this approach, we don't need to get an image. Previously we needed the `ubuntu:latest` image and had to download it manually. In this case, we just specify exactly this, and docker does the rest. In a new empty file called Dockerfile, add this line:
+For this approach, we do not need to pull an image manually. In a new empty file called Dockerfile, add this line:
 
 ```sh
 FROM python:3.12-slim
@@ -222,7 +222,7 @@ If you now run it as a new container, either with the name you specified (option
 
 See [Builder reference][1] for more options.
 
-Optionally, now you can login to your docker hub account with `docker login` and then push the container image to the repository with `docker push <imagename>`. (you need an account for that..)
+Optionally, you can log in to your Docker Hub account with `docker login` and then push the container image to the repository with `docker push <imagename>` (you need an account for that).
 
 ## Resources
 
@@ -237,14 +237,14 @@ These are resources that can be set with existing containers.
 
 Returning to resource type 1, we can set these in the image file or at creation. A port for a web client can e.g., be set through the line `EXPOSE 80` and expose port 80. This sets the default port on the image side and makes it available on the configured network adapter. By default, Docker creates a virtual network with its own IP range.
 
-The port is then accessible in this network. As an example, let's try a default apache2 web server image. 
+The port is then accessible on this network. As an example, let's try the default Apache web server image.
 
 ```sh
 docker run  httpd:latest
 ```
-This downloads the latest image and runs it locally. If you check the [Dockerfile of httpd][7], you can see that it contains `EXPOSE 80`. This tells us that this port is now available in the internal network. If you run it, the output of the console shows you the assigned IP of the web-server. In my case, `172.17.0.2`. Putting this address in a Browser should give you the "It works" page.
+This downloads the latest image and runs it locally. If you check the [Dockerfile of httpd][7], you can see that it contains `EXPOSE 80`. This tells us that this port is now available in the internal network. If you run it, the console output shows the assigned IP of the web server. In my case, `172.17.0.2`. Entering this address in a browser should show the "It works" page.
 
-Now, this runs a simple web server, and we have no connection to the outside world yet. The port is accessible only for us. If we want to map it to be reachable from the outside, we can attach the port to the host with the -p flag. The use it as `-p <host>:<container>`. Running the following makes the web-server also available at your computer's IP. 
+Now, this runs a simple web server, and we have no connection to the outside world yet. The port is accessible only locally. If we want to make it reachable from the outside, we can map the port to the host with the `-p` flag. Use it as `-p <host>:<container>`. Running the following makes the web server available at your computer's IP.
 
 ```sh
 docker run -p 80:80 httpd:latest
@@ -252,9 +252,9 @@ docker run -p 80:80 httpd:latest
 
 Now try typing `localhost` in a browser window.
 
-If we want to access files on our computer or share them between containers, we need volumes. A use case could be the web pages of apache, which we want to change from outside, or the program `calc.py` as we don't want to copy it in the image and recompile all the code the time.
+If we want to access files on our computer or share them between containers, we need volumes. A use case could be Apache web pages, which we want to change from outside, or the program `calc.py`, since we do not want to copy it into the image and rebuild every time.
 
-A mount point to a volume can be set, for example, in a docker file with `VOLUME`. On Unix/Linux systems, this creates a folder in the file system reflecting the container. If we create a volume `/myvolume`, you will have this resource in the container and in your host. Unfortunately, Windows uses virtualization, and this doesn't work right out of the box.
+A mount point to a volume can be set, for example, in a Dockerfile with `VOLUME`. On Unix/Linux systems, this creates a folder in the file system reflecting the container. If we create a volume `/myvolume`, you will have this resource in the container and on your host. Unfortunately, Windows uses virtualization, and this does not work right out of the box.
 
 Another way is to use binding. Let's say we would like to use the file we have on disk for the calculator to reflect changes when we add new features. 
 
@@ -263,18 +263,18 @@ Another way is to use binding. Let's say we would like to use the file we have o
 ```sh
 docker run --name cont2 -v "$PWD":/home/myapp -it 981dd3fd5830
 ```
-$PWD in Unix environments is the current working directory. You can also use ".". For fol Windows, use forward slash `/` instead of `\` as it might make some issues.
+`$PWD` in Unix environments is the current working directory. You can also use `.`. For Windows, use forward slashes `/` instead of `\` because backslashes may cause issues.
 
-Now, every time we start	`cont2`, the container accesses the actual file on disk. If you try to change it, you will see the program's changes if you restart it.
+Now, every time we start `cont2`, the container accesses the actual file on disk. If you change it, you will see the program changes when you restart it.
 Volumes support different modes, including remote drives, etc. This direct connection (bind) is only one mode.
 A volume might also just be mounted in one container and serve as closed external storage.
-Like images and containers, volumes can be created and managed in the docker command line with the subcommand `volume`. Try it out. 
+Like images and containers, volumes can be created and managed in the Docker command line with the subcommand `volume`. Try it out.
 Additional configurations are described in the [volumes][4] reference.
 
 :grey_question: Why should a container have a volume that is exclusive and not accessible? What might be the purpose?
 
-Type 2 resources of a container can be changed at runtime. We can set them with `docker run` at creation or with `docker update` later on. 
-For example let's try to set the CPU assigned to `cont2`.
+Type-2 resources of a container can be changed at runtime. We can set them with `docker run` at creation or with `docker update` later on.
+For example, let's try to set the CPU assigned to `cont2`.
 
 ```sh
 docker update --cpu-quota 1000 --cpu-period 1000000 cont2
@@ -284,7 +284,7 @@ This sets the amount to 1\% of the total assigned CPU. Try it out a bit yourself
 
 ## Users and privileges
 
-It is common practice to create users and limit access and privileges of containers. One thing is that a container by default has only one user, `root`. Thus, to restrict access, the finished image should use an unprivileged user that runs the software. For proper access management, commands like `ADD` and `COPY` foresee flags to change a file's ownership. More details can be found in the [builder refernece][1].
+It is common practice to create users and limit access and privileges in containers. By default, a container has only one user, `root`. Thus, to restrict access, the finished image should use an unprivileged user that runs the software. For proper access management, commands like `ADD` and `COPY` support flags to change file ownership. More details can be found in the [builder reference][1].
 
 As we have seen previously, a container shares the kernel with the host (or Virtual machine in the case of Windows). To limit the container's host access, all containers have no advanced privileges by default. Thus, capabilities such as changing a task's priority or scheduling policy need particular privileges. These privileges are given with the `--cap-add=` parameter at container run. Example:
 

@@ -1,7 +1,7 @@
 # Containerization - Hands-on session for Docker
 EMSE Docker tutorial
 
-To have all aligned up and ready to go, I send you some short
+To get everyone aligned and ready to go, I am sending you some short
 introductory videos. Please install the software and try them out. If
 you have issues, contact me BEFORE the tutorial
 (florian.hofer@stud-inf.unibz.it). I would like to have you all on
@@ -24,12 +24,12 @@ If you wish, you can then try out a bit yourself, starting with a
 beginner tutorial here
 https://docs.docker.com/get-started/
 
-This three-level tutorial introduces the use of Docker as in the following:
+This three-level tutorial introduces Docker use as follows:
 
-* Container creation, poms one and two
+* Container creation, parts one and two
 * Containers in composition
 * Personalized use of containers
 
-Each of them comes in a folder with step by step instructions, as well as the finished file. Try it out yourself first, make the experience. If you have issues, consult the final version.
+Each part is in its own folder with step-by-step instructions and a finished file. Try it yourself first to gain experience. If you have issues, consult the final version.
 
 It is not intended to be exhaustive. Like with every other tool, the features you need depend a lot on the use you make of it.

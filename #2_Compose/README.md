@@ -2,8 +2,8 @@
 
 ## Docker Compose 
 
-Docker Compose is a command-line interface for Docker that can be used for a variety of goals. Similar to Docker, it uses a configuration file that helps to automate a process. The file, or the *composition* is a set of information that describes how containers have to interact with the environment. However, one of the goals is often overlooked.
-Take for example, the following composition file. 
+Docker Compose is a command-line interface for Docker that can be used for a variety of goals. Similar to Docker, it uses a configuration file that helps automate a process. The file, or *composition*, is a set of information that describes how containers have to interact with the environment. However, one goal is often overlooked.
+Take, for example, the following composition file.
 
 ```yaml
 services:
@@ -20,7 +20,7 @@ In the following, we will see how to actually compose a service.
 
 ## Create a compose file
 
-One of the most straightforward uses of a composition is a web service. It needs a stable operating system, a web server, a database, and an interpreter for an eventual server-side language like PHP or python. 
+One of the most straightforward uses of a composition is a web service. It needs a stable operating system, a web server, a database, and an interpreter for an eventual server-side language like PHP or Python.
 A LAMP (Linux Apache MySql PHP) is such a combination. It was trendy for a long time and is still of wide use.
 The tutorial [HERE][2] shows how to create such a service using Docker and Docker Compose.
 
@@ -28,7 +28,7 @@ What you will encounter during this tutorial is that many options and flags remi
 
 ## Resources
 
-Resources management grow of importance the more a system is used to perform multiple tasks. On a server, one service mustn't threaten the health of the other. 
+Resource management grows in importance as a system is used for multiple tasks. On a server, one service must not threaten the health of another.
 As you may already have guessed, Docker Compose foresees parameters to manage these resources.
 
 :grey_question: Which are they? Try to set up a memory limit for the database. 
@@ -39,7 +39,7 @@ A thing not discussed previously is the flexibility of volumes. Beyond the tradi
 
 ## Swarm
 
-An extension of a composition is a Swarm. Docker swarm is only one of a few ways to use multiple nodes to provide a particular service. The [Voting App][3] example of the tutorial shows how an application can use parallelized instances. With multiple nodes, the service can be spawned on many servers or virtual instances. If you didn't try it out yet, do it now.
+An extension of a composition is a Swarm. Docker Swarm is one of several ways to use multiple nodes to provide a particular service. The [Voting App][3] example in the tutorial shows how an application can use parallelized instances. With multiple nodes, the service can be spawned on many servers or virtual instances. If you have not tried it out yet, do it now.
 
 :grey_question: So, when is this really useful? Who might be applying this technology?
 
