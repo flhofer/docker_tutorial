@@ -51,6 +51,51 @@ If `docker compose` is not found, install/enable the Compose plugin as described
 * `docker compose down`: stop and remove containers/network.
 * `docker compose down -v`: also remove named volumes.
 
+## General networking considerations
+
+* By default, each Compose project gets a dedicated network named `<project>_default` ([9]).
+* For Compose apps, this default network is typically a user-defined `bridge` network ([9], [10]).
+* Containers on the same Compose network can resolve each other by service name (embedded DNS), for example `db` from `web` ([9]).
+* `ports:` publishes container ports to the host; internal service-to-service traffic should use container/service ports, not host ports ([9]).
+* `network_mode: host` shares the host network namespace. In this mode, `ports:` mappings are ignored ([11]).
+
+:information_source: On Docker Desktop, networking is provided through a VM/backend layer, so host-level bridge details differ from native Linux Docker Engine behavior ([12]).
+
+### Access host services from containers
+
+If a container needs a service running on the host, use `host.docker.internal` when available ([12]).
+On Linux engines, map it explicitly when needed:
+
+```yaml
+services:
+  app:
+    image: alpine
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+```
+
+This avoids hardcoding the host IP and keeps the Compose file portable ([13]).
+
+### Multiple network adapters per container
+
+A service can attach to multiple networks (effectively multiple interfaces/routes):
+
+```yaml
+services:
+  app:
+    image: alpine
+    command: sleep infinity
+    networks:
+      - frontend
+      - backend
+
+networks:
+  frontend:
+  backend:
+```
+
+This is useful when one container must talk to two isolated network segments ([4], [9]).
+
 ## Create a compose file
 
 One of the most straightforward uses of a composition is a web service. It needs a stable operating system, a web server, a database, and an interpreter for an eventual server-side language like PHP or Python.
@@ -112,3 +157,8 @@ An extension of a composition is a Swarm. Docker Swarm is one of several ways to
 [6]: <https://docs.docker.com/engine/swarm/> "Swarm mode overview"
 [7]: <https://docs.docker.com/compose/install/> "Compose install methods"
 [8]: <https://docs.docker.com/engine/deprecated/> "Engine deprecated and removed features"
+[9]: <https://docs.docker.com/compose/how-tos/networking/> "Compose networking behavior"
+[10]: <https://docs.docker.com/reference/compose-file/networks/> "Compose networks reference"
+[11]: <https://docs.docker.com/engine/network/tutorials/host/> "Host network mode"
+[12]: <https://docs.docker.com/desktop/features/networking/networking-how-tos/> "Docker Desktop networking how-tos"
+[13]: <https://docs.docker.com/reference/cli/docker/container/run/> "host-gateway and add-host"
